@@ -287,7 +287,7 @@ void MonsterMelee::setIllumination(int row, int col, Board& board)
 	if (row - 1 >= 0 && board.m_arrBoard[row - 1][col]->getSymbol() != Wall)
 		board.m_arrBoard[row - 1][col]->illuminationT();
 }
-bool Object::ProverkaLogic(int row, int col, Object::Direction dir, Board &board)
+bool Object::CheckLogic(int row, int col, Object::Direction dir, Board &board)
 {
 	if (dir == Object::Direction::Up)
 	{
@@ -374,7 +374,7 @@ bool Object::ProverkaLogic(int row, int col, Object::Direction dir, Board &board
 	 int Prow = board.getPlayer().row;
 	 int Pcol = board.getPlayer().col;
 	 
-	 Board::RowCol r[4];
+	 Board::RowCol r[4];//задаем точки, которые атакуются монстром
 
 	 r[0].row = Mrow - (Prow + 2);
 
@@ -417,124 +417,41 @@ bool Object::ProverkaLogic(int row, int col, Object::Direction dir, Board &board
 	 setPoint(ii, board.m_number);
 	 return LogicLogic(row, col, Mrow, Mcol, board);
 }
-bool MonsterMeleeDiagonal::motion(int row, int col, Direction dir, Board& board)
-{
-	bool boo = true;
-	boo = !attack(row, col, board);
-	if (boo)
-		Object::motion(row, col, dir, board);
-	return true;
-}
-bool MonsterMeleeDiagonal::attack(int row, int col, Board& board)
-{
-	if (col + 1 < board.m_Columns && row + 1 < board.m_Rows && board.m_arrBoard[row + 1][col + 1]->getSymbol() == Player)
-	{
-		board.m_arrBoard[row + 1][col + 1]->setHelth(1);
-		return true;
-	}
-	if (col - 1 >= 0 && row + 1 < board.m_Rows && board.m_arrBoard[row + 1][col - 1]->getSymbol() == Player)
-	{
-		board.m_arrBoard[row + 1][col - 1]->setHelth(1);
-		return true;
-	}
-	if (row - 1 >= 0 && col - 1 >= 0 && board.m_arrBoard[row - 1][col - 1]->getSymbol() == Player)
-	{
-		board.m_arrBoard[row - 1][col - 1]->setHelth(1);
-		return true;
-	}
-	if (row - 1 >= 0 && col + 1 < board.m_Columns && board.m_arrBoard[row - 1][col + 1]->getSymbol() == Player)
-	{
-		board.m_arrBoard[row - 1][col + 1]->setHelth(1);
-		return true;
-	}
-	return false;
-}
-Object::Direction MonsterMeleeDiagonal::Logic(int Mrow, int Mcol, Board& board)
-{
-	const int Prow = board.getPlayer().row;
-	const int Pcol = board.getPlayer().col;
-
-	Board::RowCol r[8];
-
-	
-	r[0].row = Mrow - (Prow - 1);
-
-	r[0].col = Mcol - (Pcol - 2);
-
-	r[1].row = Mrow - (Prow - 2);
-	
-	r[1].col = Mcol - (Pcol - 1);
-
-	r[2].row = Mrow - (Prow + 1);
-
-	r[2].col = Mcol - (Pcol + 1);
-
-	r[3].row = Mrow - (Prow + 2);
-
-	r[3].col = Mcol - (Pcol + 2);
-
-	r[4].row = Mrow - (Prow - 1);
-	
-	r[4].col = r[3].col;
-
-	r[5].row = Mrow - (Prow - 2);
-
-	r[5].col = r[2].col;
-
-	r[6].row = r[5].row;
-
-	r[6].col = r[1].col;
-
-	r[7].row = r[4].row;
-
-	r[7].col = r[0].col;
-
-	int row = 1000;
-	int col = 1000;
-	for (int i = 0; i < 8; i++)
-		if (abs(r[i].row) + abs(r[i].col) < abs(row) + abs(col))
-		{
-			row = r[i].row;
-			col = r[i].col;
-		}
-	return LogicLogic(row, col, Mrow, Mcol, board);
-
-}
 Object::Direction Object::LogicLogic(int row, int col, int Mrow, int Mcol, Board& board)
 {
 	if (abs(row) > abs(col))
 	{
-		if (row > 0 && ProverkaLogic(Mrow, Mcol, Up, board))
+		if (row > 0 && CheckLogic(Mrow, Mcol, Up, board))
 			return Up;
-		else if (ProverkaLogic(Mrow, Mcol, Down, board))
+		else if (CheckLogic(Mrow, Mcol, Down, board))
 			return Down;
 	}
 	else if (abs(row) < abs(col))
 	{
-		if (col > 0 && ProverkaLogic(Mrow, Mcol, Left, board))
+		if (col > 0 && CheckLogic(Mrow, Mcol, Left, board))
 			return Left;
-		else if (ProverkaLogic(Mrow, Mcol, Right, board))
+		else if (CheckLogic(Mrow, Mcol, Right, board))
 			return Right;
 	}
 	else
 	{
 		if (rand() % 2)
 		{
-			if (row > 0 && ProverkaLogic(Mrow, Mcol, Up, board))
+			if (row > 0 && CheckLogic(Mrow, Mcol, Up, board))
 				return Up;
 
-			else if (ProverkaLogic(Mrow, Mcol, Down, board))
+			else if (CheckLogic(Mrow, Mcol, Down, board))
 				return Down;
 		}
-		else if (col > 0 && ProverkaLogic(Mrow, Mcol, Left, board))
+		else if (col > 0 && CheckLogic(Mrow, Mcol, Left, board))
 			return Left;
 
-		else if (ProverkaLogic(Mrow, Mcol, Right, board))
+		else if (CheckLogic(Mrow, Mcol, Right, board))
 			return Right;
 	}
 	return static_cast<Object::Direction> (rand() % 4);
 }
-bool Mag::motion(int row, int col, Direction dir, Board& board)
+bool Magician::motion(int row, int col, Direction dir, Board& board)
 {
 	if (m_curses == Stun && m_time == 0)
 	{
@@ -551,7 +468,7 @@ bool Mag::motion(int row, int col, Direction dir, Board& board)
 		Object::motion(row, col, dir, board);
 	return boo;
 }
-bool Mag::attack(int row, int col, Board& board)
+bool Magician::attack(int row, int col, Board& board)
 {
 	for (int i = 2; row + i < board.m_Rows && i < 5; i++)
 		if (board.m_arrBoard[row + i][col]->getSymbol() == Player)
@@ -587,7 +504,7 @@ bool Mag::attack(int row, int col, Board& board)
 			break;
 	return false;
 }
-Object::Direction Mag::Logic(int Mrow, int Mcol, Board& board)
+Object::Direction Magician::Logic(int Mrow, int Mcol, Board& board)
 {
 
 	const int Prow = board.getPlayer().row;
@@ -709,7 +626,7 @@ bool Player::skill(int row, int col, Skills s, Board& board)
 	}
 	return false;
 }
-bool MagDiagonal::motion(int row, int col, Direction dir, Board& board)
+bool MagicianDiagonal::motion(int row, int col, Direction dir, Board& board)
 {
 	if (m_curses == Stun && m_time == 0)
 	{
@@ -726,7 +643,7 @@ bool MagDiagonal::motion(int row, int col, Direction dir, Board& board)
 		Object::motion(row, col, dir, board);
 	return boo;
 }
-bool MagDiagonal::attack(int row, int col, Board& board)
+bool MagicianDiagonal::attack(int row, int col, Board& board)
 {
 	for (int i = 1; col + i < board.m_Columns && row + i < board.m_Rows && i < 5; i++)
 		if (board.m_arrBoard[row + i][col+i]->getSymbol() == Player)
@@ -762,7 +679,7 @@ bool MagDiagonal::attack(int row, int col, Board& board)
 			break;
 	return false;
 }
-Object::Direction MagDiagonal::Logic(int Mrow, int Mcol, Board& board)
+Object::Direction MagicianDiagonal::Logic(int Mrow, int Mcol, Board& board)
 {
 	const int Prow = board.getPlayer().row;
 	const int Pcol = board.getPlayer().col;
@@ -927,7 +844,7 @@ int MonsterMelee::Comparison(int Mrow, int Mcol, Board& board)
 			}
 	return abs(row) + abs(col);
 }
-int Mag::Comparison(int Mrow, int Mcol, Board& board)
+int Magician::Comparison(int Mrow, int Mcol, Board& board)
 {
 	const int Prow = board.getPlayer().row;
 	const int Pcol = board.getPlayer().col;
@@ -1006,7 +923,7 @@ int Mag::Comparison(int Mrow, int Mcol, Board& board)
 			}
 	return abs(row) + abs(col);
 }
-bool Mag::ProverkaPoint(int a, Board& board)
+bool Magician::ProverkaPoint(int a, Board& board)
 {
 	board.setExcluded();
 	switch (a)
@@ -1062,7 +979,7 @@ bool Mag::ProverkaPoint(int a, Board& board)
 	}
 	return false;
 }
-void Mag::setPoint(int i, int* number)
+void Magician::setPoint(int i, int* number)
 {
 	switch (i)
 	{
@@ -1120,7 +1037,7 @@ void Mag::setPoint(int i, int* number)
 		break;
 	}
 }
-int MagDiagonal::Comparison(int Mrow, int Mcol, Board& board)
+int MagicianDiagonal::Comparison(int Mrow, int Mcol, Board& board)
 {
 	const int Prow = board.getPlayer().row;
 	const int Pcol = board.getPlayer().col;
@@ -1181,7 +1098,7 @@ int MagDiagonal::Comparison(int Mrow, int Mcol, Board& board)
 			}
 	return abs(row) + abs(col);
 }
-bool MagDiagonal::ProverkaPoint(int a, Board& board)
+bool MagicianDiagonal::ProverkaPoint(int a, Board& board)
 {
 	board.setExcluded();
 	switch (a)
@@ -1221,7 +1138,7 @@ bool MagDiagonal::ProverkaPoint(int a, Board& board)
 	}
 	return false;
 }
-void MagDiagonal::setPoint(int i, int* number)
+void MagicianDiagonal::setPoint(int i, int* number)
 {
 	switch (i)
 	{
@@ -1267,7 +1184,7 @@ void MagDiagonal::setPoint(int i, int* number)
 		break;
 	}
 }
-void Mag::setIllumination(int row, int col, Board& board)
+void Magician::setIllumination(int row, int col, Board& board)
 {
 	for (int i = 2; row + i < board.m_Rows && i < 5; i++)
 	{
@@ -1311,7 +1228,7 @@ void Mag::setIllumination(int row, int col, Board& board)
 	}
 			
 }
-void MagDiagonal::setIllumination(int row, int col, Board& board)
+void MagicianDiagonal::setIllumination(int row, int col, Board& board)
 {
 	for (int i = 1; col + i < board.m_Columns && row + i < board.m_Rows && i < 5; i++)
 	{
@@ -1353,7 +1270,7 @@ void MagDiagonal::setIllumination(int row, int col, Board& board)
 		board.m_arrBoard[row + i][col - i]->illuminationT();
 	}
 }
-void Mag::animation(sf::RenderWindow& window, int row, int col, Board& board)
+void Magician::animation(sf::RenderWindow& window, int row, int col, Board& board)
 {
 	sf::Texture Ball;
 	Ball.loadFromFile(board.m_path + "шар.png");
@@ -1420,7 +1337,7 @@ void Mag::animation(sf::RenderWindow& window, int row, int col, Board& board)
 	window.display();
 	Sleep(500);
 }
-void MagDiagonal::animation(sf::RenderWindow& window, int row, int col, Board& board)
+void MagicianDiagonal::animation(sf::RenderWindow& window, int row, int col, Board& board)
 {
 	sf::Texture Arrow;
 	Arrow.loadFromFile(board.m_path + "стрела.png");

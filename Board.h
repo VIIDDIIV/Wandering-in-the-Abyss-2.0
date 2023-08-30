@@ -25,11 +25,11 @@ protected:
 	int m_Columns;
 	int m_Rows;
 	Player m_player;
-	RowCol m_pointsPlayer[13];
-	std::vector<int> m_excluded;
-	int m_number[13];
-	RowCol* m_universal;
-	RowCol m_r;
+	RowCol m_pointsPlayer[13];//точки, в которые может встать игрок
+	std::vector<int> m_excluded;//точки, закрытые препятствиями
+	int m_number[13];//количество монстров атакующих точку
+	RowCol* m_universal;//позиции монстров
+	RowCol m_r;//позиция игрока
 	int m_killMonster;
 
 
@@ -45,7 +45,7 @@ public:
 	bool EndGame() { return m_player.getHelth() <= 0; }
 	bool Skills(int row, int col) { return m_player.skill(row, col, m_skill, *this); }
 	void CreateUniversal();
-	void sortUniversal(int a);
+	void sortUniversal(int a);//сортируем по близости к точкам, которые надо перекрыть
 	void LevelUp();
 	
 
@@ -57,7 +57,7 @@ public:
 	Object setBoard(int row, int col) { return *m_arrBoard[row][col]; }
 	int getLevel() { return m_level; }
 	void setSkills(Object::Skills s) { m_skill = s; }
-	int getMonster();
+	int getMonster();//подсчитываем количество монстров
 	void setIllumination(int row, int col) { m_arrBoard[row][col]->setIllumination(row, col, *this); }
 	bool getIllumination(int row, int col) { return m_arrBoard[row][col]->getIllumination(); }
 	void ResetIllumination();
@@ -80,8 +80,7 @@ public:
 	friend Object;
 	friend Player;
 	friend MonsterMelee;
-	friend MonsterMeleeDiagonal;
-	friend Mag;
-	friend MagDiagonal;
+	friend Magician;
+	friend MagicianDiagonal;
 };
 

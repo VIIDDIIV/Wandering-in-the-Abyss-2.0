@@ -43,17 +43,7 @@ void Board::SetupBoard(bool boo)
 	
 	m_arrBoard[0][m_Columns / 2] = new Object(Object::Portal);
 	
-	/*for (int i = 0; i < 5;)
-	{
-		int row = rand() % (m_Rows - 3);
-		int col = rand() % m_Columns;
-		if (m_arrBoard[row][col]->getSymbol() == Object::Emptiness)
-		{
-			delete m_arrBoard[row][col];
-			m_arrBoard[row][col] = new MonsterMeleeDiagonal;
-			i++;
-		}
-	}*/
+	
 	for (int i = 0; i < 1 + m_level;)
 	{
 		int row = rand() % (m_Rows - 3);
@@ -72,7 +62,7 @@ void Board::SetupBoard(bool boo)
 		if (m_arrBoard[row][col]->getSymbol() == Object::Emptiness)
 		{
 			delete m_arrBoard[row][col];
-			m_arrBoard[row][col] = new Mag;
+			m_arrBoard[row][col] = new Magician;
 			i++;
 		}
 	}
@@ -83,7 +73,7 @@ void Board::SetupBoard(bool boo)
 		if (m_arrBoard[row][col]->getSymbol() == Object::Emptiness)
 		{
 			delete m_arrBoard[row][col];
-			m_arrBoard[row][col] = new MagDiagonal;
+			m_arrBoard[row][col] = new MagicianDiagonal;
 			i++;
 		}
 	}
@@ -111,10 +101,6 @@ void Board::DeleteBoard(void)
 {
 	RowCol r = getPlayer();
 	m_r = getPlayer();
-	//swap(m_arrBoard[m_r.row][m_r.col], m_arrBoard[m_Rows - 1][m_Columns / 2]);
-	//RowCol rr = getPlayer();
-	//m_r = rr;
-	//delete m_arrBoard[0][0];
 	if (m_arrBoard != nullptr)
 	{
 		for (int row = 0; row < m_Rows; row++)
@@ -128,12 +114,9 @@ void Board::DeleteBoard(void)
 					delete m_arrBoard[row][col];
 					m_arrBoard[row][col] = nullptr;	
 				}
-				//delete[] m_arrBoard[row];
-				//m_arrBoard[row] = nullptr;
+				
 			}
 		}
-		//delete[] m_arrBoard;
-		//m_arrBoard = nullptr;
 	}
 }
 
@@ -165,7 +148,9 @@ void Board::moveM(sf::RenderWindow& window)
 	for (int i = 0; i < getMonster(); i++)
 	{
 			sortUniversal(i);
-		if (m_arrBoard[m_universal[i].row][m_universal[i].col]->motion(m_universal[i].row, m_universal[i].col, m_arrBoard[m_universal[i].row][m_universal[i].col]->Logic(m_universal[i].row, m_universal[i].col, *this), *this))
+		if (m_arrBoard[m_universal[i].row][m_universal[i].col]
+			->motion(m_universal[i].row, m_universal[i].col, m_arrBoard[m_universal[i].row][m_universal[i].col]
+			->Logic(m_universal[i].row, m_universal[i].col, *this), *this))
 			m_arrBoard[m_universal[i].row][m_universal[i].col]->animation(window, m_universal[i].row, m_universal[i].col, *this);
 	}
 	
@@ -260,7 +245,8 @@ void Board::sortUniversal(int a)
 	for (int i = a; i < getMonster() - 1; i++)
 	{
 		for(int j = i + 1; j < getMonster(); j++)
-			if (m_arrBoard[m_universal[i].row][m_universal[i].col]->Comparison(m_universal[i].row, m_universal[i].col, *this) > m_arrBoard[m_universal[j].row][m_universal[j].col]->Comparison(m_universal[j].row, m_universal[j].col, *this))
+			if (m_arrBoard[m_universal[i].row][m_universal[i].col]->Comparison(m_universal[i].row, m_universal[i].col, *this)
+				> m_arrBoard[m_universal[j].row][m_universal[j].col]->Comparison(m_universal[j].row, m_universal[j].col, *this))
 				swap(m_universal[i], m_universal[j]);		
 	}
 }
@@ -277,17 +263,9 @@ void Board::LevelUp()
 	Choice.loadFromFile(m_path + "окно.png");
 	sf::Sprite choice(Choice);
 	sf::RectangleShape square(sf::Vector2f(60.f, 60.f));
-	///*sf::Window window(sf::VideoMode(300, 200),"", sf::Style::None);*/
-
-	//sf::Font font;
-	//font.loadFromFile("\\—транстви€ в бездне 2\\chiller_regular.ttf");
-	//sf::Text text;
-
-	//text.setFont(font);
 
 	sf::RenderWindow window1(sf::VideoMode(400, 300)," ", sf::Style::None);
 	window1.setFramerateLimit(30);
-	/*window.clear(sf::Color(20,20,20));*/
 	window1.draw(choice);
 	square.setFillColor(sf::Color(0, 0, 0));
 	square.setPosition(m_r.col * 60, m_r.row * 60);
@@ -299,14 +277,12 @@ void Board::LevelUp()
 	while (window1.isOpen())
 	{
 		sf::Event event;
-		// ѕолучаем координаты курсора мышки относительно окна нашего приложени€
+		
 		sf::Vector2i pos = sf::Mouse::getPosition(window1);
 		int x = pos.x / 200;
-		//int y = pos.y / 200;
+		
 		while (window1.pollEvent(event))
 		{
-			/*if (event.type == sf::Event::KeyPressed)
-				continue;*/
 			if (event.type == sf::Event::KeyPressed)
 				continue;
 

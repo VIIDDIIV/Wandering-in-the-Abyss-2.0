@@ -34,12 +34,12 @@ int main(int argc, char* argv[])
    
     while (window.isOpen())
     {
-        // Получаем координаты курсора мышки относительно окна нашего приложения
+       
         sf::Vector2i pos = sf::Mouse::getPosition(window);
         int x = pos.x / w;
         int y = pos.y / w;
 
-        bool mot = false;
+        bool mot = false;//может ли игрок двинуться в выбпанную сторону
 
         while (window.pollEvent(event))
         {
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
                 window.close();
 
             if (event.type == sf::Event::KeyPressed)
-                // Эта кнопка – стрелка вверх?
+                
                 if (event.key.code == sf::Keyboard::W)
                 {
                     board.ResetIllumination();
@@ -147,6 +147,7 @@ int main(int argc, char* argv[])
                     if (event.type == sf::Event::Closed)
                         window.close();
                
+
             }
 
         }

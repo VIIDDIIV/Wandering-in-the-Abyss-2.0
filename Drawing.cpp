@@ -74,23 +74,17 @@ void drawing(Board& board, sf::RenderWindow& window, const int w)//, sf::Sprite 
                 portal.setPosition(col * w, row * w);
                 window.draw(portal);
             }
-            else if (board.getBoard(row, col) == Object::MonsterMeleeDiagonal)
-            {
-                square.setFillColor(sf::Color(50, 100, 0));
-                square.setPosition(col * w, row * w);
-                window.draw(square);
-            }
             else if (board.getBoard(row, col) == Object::MonsterMelee)
             {
                 monster.setPosition(col * w, row * w);
                 window.draw(monster);
             }
-            else if (board.getBoard(row, col) == Object::Mag)
+            else if (board.getBoard(row, col) == Object::Magician)
             {
                 mag.setPosition(col * w, row * w);
                 window.draw(mag);
             }
-            else if (board.getBoard(row, col) == Object::MagDiagonal)
+            else if (board.getBoard(row, col) == Object::MagicianDiagonal)
             {
                 bowman.setPosition(col * w, row * w);
                 window.draw(bowman);

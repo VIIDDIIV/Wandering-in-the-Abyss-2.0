@@ -17,10 +17,9 @@ public:
 		Portal,
 		Player,
 		MonsterMelee,
-		MonsterMeleeDiagonal,
-		Mag,
-		MagDiagonal,
-		Bomber,
+		Magician,
+		MagicianDiagonal,
+		
 	};
 	enum Direction
 	{
@@ -41,12 +40,10 @@ public:
 protected:
 	TypeObject m_symbol;
 	int m_helth;
-	bool m_illumination;
+	bool m_illumination;// параметр для подсветки атаки
 	Curses m_curses;
-	int m_time;
+	int m_time;//время действия проклятия
 
-public:
-	
 public:
 	Object(TypeObject symbol= Emptiness,int helth = 1);
 	TypeObject getSymbol() noexcept { return m_symbol; }
@@ -60,12 +57,12 @@ public:
 	
 public:
 	virtual void setHelth(int c) noexcept { m_helth -= c; }
-	virtual Direction LogicLogic(int row, int col, int Mrow, int Mcol, Board& board);
-	virtual Direction Logic(int row, int col, Board& board) { return Up; }
+	virtual Direction LogicLogic(int row, int col, int Mrow, int Mcol, Board& board);//выбор пути к точки
+	virtual Direction Logic(int row, int col, Board& board) { return Up; }//выбор точки для атаки
 	virtual bool motion(int row, int col, Direction dir, Board &board);
-	virtual bool ProverkaLogic(int row, int col, Object::Direction dir, Board& board);//смотрим можно ли двинутся в этом напрвлении
+	virtual bool CheckLogic(int row, int col, Object::Direction dir, Board& board);//смотрим, можно ли двинуться в этом напрвлении
 	virtual bool skill(int row, int col, Skills s) { return true; }
-	virtual int Comparison(int Mrow, int Mcol, Board& board) { return 0; }
+	virtual int Comparison(int Mrow, int Mcol, Board& board) { return 0; } // количество ходов необходимых для перекрытия точки
 	virtual void setIllumination(int row, int col, Board& board) { }
 	virtual void animation (sf::RenderWindow & window, int row, int col, Board& board) { }
 };
@@ -107,22 +104,10 @@ public:
 	virtual int Comparison(int Mrow, int Mcol, Board& board);
 	virtual void setIllumination(int row, int col, Board& board);
 };
-class MonsterMeleeDiagonal : public Object
+class Magician : public Object
 {
 public:
-	MonsterMeleeDiagonal(TypeObject symbol = Object::MonsterMeleeDiagonal, int helth = 1) noexcept : Object(symbol, helth) {}
-public:
-	void ProverkaHelth() noexcept { m_symbol = (m_helth > 0) ? m_symbol : Emptiness; }
-	bool attack(int row, int col, Board& board);
-public:
-	virtual void setHelth(int c) noexcept { m_helth -= c;  ProverkaHelth(); }
-	virtual bool motion(int row, int col, Direction dir, Board& board);
-	virtual Direction Logic(int Mrow, int Mcol, Board& board);
-};
-class Mag : public Object
-{
-public:
-	Mag (TypeObject symbol = Object::Mag, int helth = 1) noexcept : Object(symbol, helth) {}
+	Magician (TypeObject symbol = Object::Magician, int helth = 1) noexcept : Object(symbol, helth) {}
 
 public:
 	void ProverkaHelth() noexcept { m_symbol = (m_helth > 0) ? m_symbol : Emptiness; }
@@ -137,10 +122,10 @@ public:
 	virtual void setIllumination(int row, int col, Board& board);
 	virtual void animation(sf::RenderWindow& window, int row, int col, Board& board);
 };
-class MagDiagonal : public Object
+class MagicianDiagonal : public Object
 {
 public:
-	MagDiagonal(TypeObject symbol = Object::MagDiagonal, int helth = 1) noexcept : Object(symbol, helth) {}
+	MagicianDiagonal(TypeObject symbol = Object::MagicianDiagonal, int helth = 1) noexcept : Object(symbol, helth) {}
 
 public:
 	void ProverkaHelth() noexcept { m_symbol = (m_helth > 0) ? m_symbol : Emptiness; }
@@ -155,21 +140,3 @@ public:
 	virtual void setIllumination(int row, int col, Board& board);
 	virtual void animation(sf::RenderWindow& window, int row, int col, Board& board);
 };
-//class Bomber : public Object
-//{
-//public:
-//	Bomber(TypeObject symbol = Object::Bomber, int helth = 1) noexcept : Object(symbol, helth) {}
-//
-//public:
-//	void ProverkaHelth() noexcept { m_symbol = (m_helth > 0) ? m_symbol : Emptiness; }
-//	bool attack(int row, int col, Board& board);
-//	bool ProverkaPoint(int a, Board& board);
-//	void setPoint(int i, int* number);
-//public:
-//	virtual void setHelth(int c) noexcept { m_helth -= c;  ProverkaHelth(); }
-//	virtual bool motion(int row, int col, Direction dir, Board& board);
-//	virtual Direction Logic(int Mrow, int Mcol, Board& board);
-//	virtual int Comparison(int Mrow, int Mcol, Board& board);
-//	virtual void setIllumination(int row, int col, Board& board);
-//	virtual void animation(sf::RenderWindow& window, int row, int col, Board& board);
-//};
