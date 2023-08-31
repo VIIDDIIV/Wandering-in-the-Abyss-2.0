@@ -374,7 +374,7 @@ bool Object::CheckLogic(int row, int col, Object::Direction dir, Board &board)
 	 int Prow = board.getPlayer().row;
 	 int Pcol = board.getPlayer().col;
 	 
-	 Board::RowCol r[4];//задаем точки, которые атакуются монстром
+	 Board::RowCol r[4];//setting the points that are attacked by the monster
 
 	 r[0].row = Mrow - (Prow + 2);
 

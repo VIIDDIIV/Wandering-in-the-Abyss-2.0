@@ -29,7 +29,6 @@ void Board::SetupBoard(bool boo)
 		DeleteBoard();
 	if (m_arrBoard == nullptr)
 		CreateBoard();
-	//int obstacles = 12;
 	for (int row = 0; row < m_Rows; row++)
 		for (int col = 0; col < m_Columns; col++)
 			if (m_r.row == row && m_r.col == col)
@@ -83,14 +82,11 @@ void Board::SetupBoard(bool boo)
 }
 void Board::CreateBoard()
 {
-	// Если у нас осталась доска с предыдущего раза, то удаляем её
 	if (m_arrBoard != nullptr)
 		DeleteBoard();
 
-	// Создаем массив для хранения строк
 	m_arrBoard = new Object ** [m_Rows];
 
-	// Создаем отдельно каждую строку
 	for (int row = 0; row < m_Rows; row++)
 	{
 		m_arrBoard[row] = new Object*[m_Columns];
@@ -132,7 +128,7 @@ Board::RowCol Board::getPlayer()
 				return r;
 			}
 
-	r.row = m_Rows;//если игрока не нашли 
+	r.row = m_Rows;//if the player is not found
 	r.col = m_Columns;
 	return  r;
 }

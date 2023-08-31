@@ -1,8 +1,8 @@
-//#include <SFML/Graphics.hpp>
+
 #include "Board.h"
 #include <string>
 #include <sstream>
-void drawing(Board& board, sf::RenderWindow& window, const int w)//, sf::Sprite monster, sf::Sprite mag, sf::RectangleShape square, sf::Sprite lava, sf::Sprite portal, sf::Sprite wall, sf::Sprite bowman)
+void drawing(Board& board, sf::RenderWindow& window, const int w)
 {
     sf::RectangleShape square(sf::Vector2f(60.f, 60.f));
     sf::Texture magg;

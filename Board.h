@@ -25,11 +25,11 @@ protected:
 	int m_Columns;
 	int m_Rows;
 	Player m_player;
-	RowCol m_pointsPlayer[13];//точки, в которые может встать игрок
-	std::vector<int> m_excluded;//точки, закрытые препятствиями
-	int m_number[13];//количество монстров атакующих точку
-	RowCol* m_universal;//позиции монстров
-	RowCol m_r;//позиция игрока
+	RowCol m_pointsPlayer[13];//points on which the player can stand
+	std::vector<int> m_excluded;//points closed by obstacles
+	int m_number[13];//the number of monsters attacking the point
+	RowCol* m_universal;//monster positions
+	RowCol m_r;//player's position
 	int m_killMonster;
 
 
@@ -45,7 +45,7 @@ public:
 	bool EndGame() { return m_player.getHelth() <= 0; }
 	bool Skills(int row, int col) { return m_player.skill(row, col, m_skill, *this); }
 	void CreateUniversal();
-	void sortUniversal(int a);//сортируем по близости к точкам, которые надо перекрыть
+	void sortUniversal(int a);//sort by proximity to the points that need to be blocked
 	void LevelUp();
 	
 
@@ -57,7 +57,7 @@ public:
 	Object setBoard(int row, int col) { return *m_arrBoard[row][col]; }
 	int getLevel() { return m_level; }
 	void setSkills(Object::Skills s) { m_skill = s; }
-	int getMonster();//подсчитываем количество монстров
+	int getMonster();//counting the number of monsters
 	void setIllumination(int row, int col) { m_arrBoard[row][col]->setIllumination(row, col, *this); }
 	bool getIllumination(int row, int col) { return m_arrBoard[row][col]->getIllumination(); }
 	void ResetIllumination();

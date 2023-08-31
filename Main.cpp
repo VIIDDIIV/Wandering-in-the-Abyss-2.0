@@ -87,10 +87,8 @@ int main(int argc, char* argv[])
                 {
                     board.setSkills(Object::Shock);
                 }
-            // Определяем, была ли нажата кнопка мыши?
             if (event.type == sf::Event::MouseButtonPressed)
 
-                // Если была нажата левая кнопка мыши, то открываем клетку
                 if (event.key.code == sf::Mouse::Left)
                 {
                     board.ResetIllumination();
@@ -127,9 +125,6 @@ int main(int argc, char* argv[])
 
 
             text.setFillColor(sf::Color::Red);
-
-
-            //text.setStyle(sf::Text::Bold | sf::Text::Underlined);
             text.setPosition(330, 300);
 
             window.clear(sf::Color(0, 0, 0));
@@ -152,7 +147,7 @@ int main(int argc, char* argv[])
 
         }
         window.display();
-        //Sleep(150);
+        Sleep(100);
     }
 
     return 0;

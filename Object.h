@@ -40,9 +40,9 @@ public:
 protected:
 	TypeObject m_symbol;
 	int m_helth;
-	bool m_illumination;// параметр для подсветки атаки
+	bool m_illumination;// parameter for highlighting the attack
 	Curses m_curses;
-	int m_time;//время действия проклятия
+	int m_time;//duration of the curse
 
 public:
 	Object(TypeObject symbol= Emptiness,int helth = 1);
@@ -57,18 +57,17 @@ public:
 	
 public:
 	virtual void setHelth(int c) noexcept { m_helth -= c; }
-	virtual Direction LogicLogic(int row, int col, int Mrow, int Mcol, Board& board);//выбор пути к точки
-	virtual Direction Logic(int row, int col, Board& board) { return Up; }//выбор точки для атаки
+	virtual Direction LogicLogic(int row, int col, int Mrow, int Mcol, Board& board);//choosing a path to a point
+	virtual Direction Logic(int row, int col, Board& board) { return Up; }//choosing a point to attack
 	virtual bool motion(int row, int col, Direction dir, Board &board);
-	virtual bool CheckLogic(int row, int col, Object::Direction dir, Board& board);//смотрим, можно ли двинуться в этом напрвлении
+	virtual bool CheckLogic(int row, int col, Object::Direction dir, Board& board);//we are looking at whether it is possible to move in this direction
 	virtual bool skill(int row, int col, Skills s) { return true; }
-	virtual int Comparison(int Mrow, int Mcol, Board& board) { return 0; } // количество ходов необходимых для перекрытия точки
+	virtual int Comparison(int Mrow, int Mcol, Board& board) { return 0; } // the number of moves required to overlap the point
 	virtual void setIllumination(int row, int col, Board& board) { }
 	virtual void animation (sf::RenderWindow & window, int row, int col, Board& board) { }
 };
 class Player : public Object
 {
-//public:
 	int m_maxEnergy;
 	int m_energy;
 	int m_energyJump;
