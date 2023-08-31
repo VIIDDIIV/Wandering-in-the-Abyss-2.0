@@ -1,4 +1,5 @@
 # Wandering-in-the-Abyss-2.0
+Version with comments
 Rules:
 W, A, S, D - movement.
 To see how an enemy attacks, right-click on it.
