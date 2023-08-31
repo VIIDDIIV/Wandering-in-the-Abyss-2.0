@@ -1,6 +1,6 @@
 # Wandering-in-the-Abyss-2.0
-Version with comments
-Rules:
+# Version with comments
+# Rules:
 W, A, S, D - movement.
 To see how an enemy attacks, right-click on it.
 To freeze an opponent for two moves, press 2, and then left-click on it.
